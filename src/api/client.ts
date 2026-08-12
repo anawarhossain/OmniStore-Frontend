@@ -1,5 +1,7 @@
 const TOKEN_KEY = 'omnistore_token';
 
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
 export const getToken = (): string | null => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token: string): void => localStorage.setItem(TOKEN_KEY, token);
 export const clearToken = (): void => localStorage.removeItem(TOKEN_KEY);
@@ -30,7 +32,7 @@ export async function request<T>(
 
   let res: Response;
   try {
-    res = await fetch(`/api${path}`, {
+    res = await fetch(`${API_BASE}${path}`, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
