@@ -15,12 +15,11 @@ export default function Login() {
   const from =
     (location.state as { from?: string } | null)?.from ?? '/';
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const loginAs = async (emailValue: string, passwordValue: string) => {
     setError(null);
     setSubmitting(true);
     try {
-      await login(email, password);
+      await login(emailValue, passwordValue);
       navigate(from, { replace: true });
     } catch (err) {
       setError(
@@ -29,6 +28,11 @@ export default function Login() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await loginAs(email, password);
   };
 
   return (
@@ -58,6 +62,31 @@ export default function Login() {
           {submitting ? 'Logging in…' : 'Login'}
         </button>
       </form>
+
+      <div className="card auth-card demo-accounts">
+        <h3>Demo accounts</h3>
+        <p className="muted">
+          One-click login to explore the app:
+        </p>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          disabled={submitting}
+          onClick={() => loginAs('admin@example.com', 'admin123')}
+        >
+          Login as Admin
+          <small>admin@example.com / admin123</small>
+        </button>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          disabled={submitting}
+          onClick={() => loginAs('custmer@gmail.com', 'Customer123')}
+        >
+          Login as Customer
+          <small>custmer@gmail.com / Customer123</small>
+        </button>
+      </div>
     </div>
   );
 }
