@@ -137,18 +137,24 @@ export default function Orders() {
                   <td>{o.quantity}</td>
                   <td>${(o.product.price * o.quantity).toFixed(2)}</td>
                   <td>
-                    <select
-                      value={o.status}
-                      onChange={(e) =>
-                        changeStatus(o.id, e.target.value as OrderStatus)
-                      }
-                    >
-                      {ORDER_STATUSES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
+                    {user?.role === 'ADMIN' ? (
+                      <select
+                        value={o.status}
+                        onChange={(e) =>
+                          changeStatus(o.id, e.target.value as OrderStatus)
+                        }
+                      >
+                        {ORDER_STATUSES.map((s) => (
+                          <option key={s} value={s}>
+                            {s}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span className={`role role-${o.status.toLowerCase()}`}>
+                        {o.status}
+                      </span>
+                    )}
                   </td>
                   <td>{new Date(o.createdAt).toLocaleDateString()}</td>
                   <td>
